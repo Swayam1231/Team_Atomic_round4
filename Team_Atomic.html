@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #1a1a1a;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+        h1 {
+            font-size: 3rem;
+        }
+        p {
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+        .floating {
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+            border-radius: 50%;
+            position: relative;
+            animation: float 2s infinite ease-in-out;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0); }
+        }
+        .btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 5px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
+        }
+        .btn:active {
+            transform: scale(1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .confetti {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+            display: none;
+        }
+        .confetti .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ffeb3b;
+            border-radius: 50%;
+            animation: confetti-fall 3s linear infinite;
+        }
+        @keyframes confetti-fall {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <h1>404 - Page Not Found</h1>
+    <p>Oops! The page you're looking for doesn't exist.</p>
+    <div class="floating" onclick="showEmoji()">🎉</div>
+    <button class="btn" onclick="goHome()">Go Home</button>
+    
+    <div class="confetti" id="confetti"></div>
+
+    <script>
+        function goHome() {
+            showConfetti();
+            setTimeout(function() {
+                window.location.href = "/";
+            }, 1000);
+        }
+
+        function showConfetti() {
+            let confettiContainer = document.getElementById("confetti");
+            confettiContainer.style.display = "block";
+            for (let i = 0; i < 100; i++) {
+                let particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                particle.style.animationDelay = (Math.random() * 2) + 's';
+                confettiContainer.appendChild(particle);
+            }
+        }
+
+        function showEmoji() {
+            const circle = document.querySelector('.floating');
+            circle.textContent = '😊'; // Change emoji when clicked
+            setTimeout(() => {
+                circle.textContent = '🎉'; // Revert to the original emoji after 1 second
+            }, 1000);
+        }
+
+        // Optional: Background particle effect when hovering over the page
+        document.body.addEventListener('mousemove', function(e) {
+            let x = e.clientX;
+            let y = e.clientY;
+            let circle = document.createElement('div');
+            circle.style.position = 'absolute';
+            circle.style.width = '10px';
+            circle.style.height = '10px';
+            circle.style.backgroundColor = '#fff';
+            circle.style.borderRadius = '50%';
+            circle.style.left = (x - 5) + 'px';
+            circle.style.top = (y - 5) + 'px';
+            document.body.appendChild(circle);
+            setTimeout(() => {
+                circle.remove();
+            }, 500);
+        });
+    </script>
+</body>
+</html>
