@@ -15,11 +15,16 @@
             color: white;
             text-align: center;
             font-family: Arial, sans-serif;
-            overflow: hidden;
             position: relative;
         }
         h1 {
             font-size: 3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        h1.highlight {
+            color: #ffeb3b;
+            text-shadow: 0 0 20px rgba(255, 235, 59, 0.8);
         }
         p {
             font-size: 1.2rem;
@@ -53,7 +58,6 @@
             font-size: 1rem;
             cursor: pointer;
             border-radius: 5px;
-            position: relative;
             transition: all 0.3s ease;
         }
         .btn:hover {
@@ -64,57 +68,67 @@
             transform: scale(1);
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-        .confetti {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 100;
+
+        /* Team Atomic Logo */
+        .team-logo {
             display: none;
+            margin-top: 20px;
+            font-size: 5rem;
+            color: #00ff99;
+            opacity: 0;
+            transform: scale(0);
+            transition: opacity 0.5s, transform 0.5s;
         }
-        .confetti .particle {
+
+        .team-logo.show {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Subtle glowing border effect for team name */
+        .team-name {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #00ff99;
+            letter-spacing: 3px;
+            margin-top: 50px;
             position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: #ffeb3b;
-            border-radius: 50%;
-            animation: confetti-fall 3s linear infinite;
+            bottom: 30px;
+            opacity: 0.8;
+            text-shadow: 0 0 10px rgba(0, 255, 153, 0.6), 0 0 20px rgba(0, 255, 153, 0.4);
         }
-        @keyframes confetti-fall {
-            0% { transform: translateY(0) rotate(0deg); }
-            100% { transform: translateY(100vh) rotate(360deg); }
-        }
+
     </style>
 </head>
 <body>
-    <h1>404 - Page Not Found</h1>
+    <h1 id="error-text">404 - Page Not Found</h1>
     <p>Oops! The page you're looking for doesn't exist.</p>
     <div class="floating" onclick="showEmoji()">🎉</div>
     <button class="btn" onclick="goHome()">Go Home</button>
-    
-    <div class="confetti" id="confetti"></div>
+
+    <!-- Team Logo -->
+    <div class="team-logo" id="team-logo">
+        <span>⚡ Team Atomic ⚡</span>
+    </div>
 
     <script>
-        function goHome() {
-            showConfetti();
-            setTimeout(function() {
-                window.location.href = "/";
-            }, 1000);
-        }
+        const errorText = document.getElementById('error-text');
+        const teamLogo = document.getElementById('team-logo');
 
-        function showConfetti() {
-            let confettiContainer = document.getElementById("confetti");
-            confettiContainer.style.display = "block";
-            for (let i = 0; i < 100; i++) {
-                let particle = document.createElement('div');
-                particle.classList.add('particle');
-                particle.style.left = Math.random() * 100 + 'vw';
-                particle.style.animationDuration = (Math.random() * 2 + 3) + 's';
-                particle.style.animationDelay = (Math.random() * 2) + 's';
-                confettiContainer.appendChild(particle);
-            }
+        // When the 404 text is clicked, highlight it and show the logo
+        errorText.addEventListener('click', () => {
+            errorText.classList.add('highlight'); // Highlight the text
+
+            // Show Team Atomic logo after a short delay
+            setTimeout(() => {
+                teamLogo.classList.add('show'); // Show the logo with animation
+            }, 200); // Delay to give a smooth transition
+        });
+
+        function goHome() {
+            window.location.href = "/";
         }
 
         function showEmoji() {
@@ -124,24 +138,6 @@
                 circle.textContent = '🎉'; // Revert to the original emoji after 1 second
             }, 1000);
         }
-
-        // Optional: Background particle effect when hovering over the page
-        document.body.addEventListener('mousemove', function(e) {
-            let x = e.clientX;
-            let y = e.clientY;
-            let circle = document.createElement('div');
-            circle.style.position = 'absolute';
-            circle.style.width = '10px';
-            circle.style.height = '10px';
-            circle.style.backgroundColor = '#fff';
-            circle.style.borderRadius = '50%';
-            circle.style.left = (x - 5) + 'px';
-            circle.style.top = (y - 5) + 'px';
-            document.body.appendChild(circle);
-            setTimeout(() => {
-                circle.remove();
-            }, 500);
-        });
     </script>
 </body>
 </html>
